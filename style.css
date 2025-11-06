@@ -1,0 +1,718 @@
+@import url('https://fonts.googleapis.com/css2?family=Special+Elite&display=swap');
+
+body {
+    background-color: #000;
+    color: #fff;
+    font-family: 'Special Elite', monospace;
+    display: flex;
+    flex-direction: column; /* <<< A CORREÇÃO ESTÁ AQUI */
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.container {
+    display: flex;
+    gap: 100px;
+    width: 1000px;
+    margin-bottom: 20px;
+}
+
+/* Detalhes Pessoais */
+.detalhes-pessoais, .ficha-personagem {
+    width: 50%;
+}
+
+.detalhes-pessoais h2 {
+    text-align: center;
+    letter-spacing: 2px;
+    margin-bottom: 30px;
+}
+
+.campo {
+    margin-bottom: 15px;
+    border-bottom: 1px solid #fff;
+    padding-bottom: 10px;
+}
+
+.campo label {
+    display: block;
+    font-size: 1.1em;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+.campo input, .campo select {
+    background: none;
+    border: none;
+    color: #ffffff;
+    font-family: 'Special Elite', monospace;
+    font-size: 1em;
+    width: 100%;
+    padding: 0;
+    padding-left: 10px;
+}
+
+.campo input:focus, .campo select:focus {
+    outline: none;
+}
+
+.campo select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-image: url('data:image/svg+xml;utf8,<svg fill="white" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+    background-repeat: no-repeat;
+    background-position-x: 100%;
+    background-position-y: 5px;
+    padding-right: 20px;
+}
+
+/* Ficha do Personagem */
+.portrait-container {
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin: 0 auto 5px;
+    border: 2px solid #fff;
+    cursor: pointer;
+}
+
+.portrait-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 1;
+    transition: opacity 0.4s ease-in-out;
+}
+
+.status-container {
+    margin-top: 45px;
+    margin-bottom: 25px;
+    cursor: pointer;
+}
+
+.status-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.controles button {
+    background: none;
+    border: 1px solid #fff;
+    color: #fff;
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+    font-size: 1.2em;
+    margin-left: 5px;
+}
+
+.barra-fundo {
+    height: 30px;
+    position: relative;
+    border: 1px solid #fff;
+}
+
+.barra-fundo-pv { background-color: #4d0f0f; }
+.barra-fundo-san { background-color: #00003d; }
+.barra-fundo-ph { background-color: #2e004d; }
+
+.barra-progresso {
+    height: 100%;
+    transition: width 0.3s ease;
+}
+
+.barra-progresso.vida { background-color: #b22222; }
+.barra-progresso.sanidade { background-color: #000080; }
+.barra-progresso.habilidade { background-color: #4b0082; }
+
+.texto-barra {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.1em;
+    pointer-events: none;
+}
+
+.condicoes {
+    margin-top: 10px;
+}
+
+.condicoes input { margin-right: 5px; }
+.condicoes label { margin-right: 15px; }
+
+/* Estilos dos Modais */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 10;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.7);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal.active { display: flex; }
+
+.modal-content {
+    background-color: #000;
+    padding: 30px;
+    border: 1px solid #fff;
+    width: 90%;
+    max-width: 500px;
+    position: relative;
+}
+
+.close-button {
+    color: #fff;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.modal-content h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #fff;
+    padding-bottom: 15px;
+}
+
+.url-campo {
+    margin-bottom: 15px;
+    border-bottom: 1px solid #fff;
+    padding-bottom: 10px;
+}
+
+.stats-input-campo { margin-bottom: 20px; }
+
+.url-campo label, .stats-input-campo label {
+    display: block;
+    margin-bottom: 8px;
+    color: #aaa;
+}
+
+.url-campo input, .stats-input-campo input {
+    width: 100%;
+    background: none;
+    border: none;
+    border-bottom: 1px solid #fff;
+    color: #fff;
+    font-family: 'Special Elite', monospace;
+    font-size: 1.1em;
+    padding-bottom: 5px;
+}
+
+.url-campo input:focus, .stats-input-campo input:focus {
+    outline: none;
+}
+
+#adicionar-urls, .modal-botoes button {
+    background: none;
+    border: 1px solid #fff;
+    color: #fff;
+    padding: 10px 20px;
+    font-family: 'Special Elite', monospace;
+    font-size: 1.1em;
+    cursor: pointer;
+}
+
+#adicionar-urls {
+    display: block;
+    margin: 20px auto 0;
+}
+
+.modal-botoes {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.container-atributos {
+    margin-top: 60px;
+    align-items: flex-start;
+}
+
+.atributos-visual {
+    width: 50%;
+    display: flex;
+    flex-direction: column; /* Organiza a imagem e os stats de combate em coluna */
+    align-items: center;
+    gap: 20px; /* Espaço entre a imagem e os stats de combate */
+}
+
+.atributos-imagem-container {
+    position: relative; /* Essencial para posicionar os inputs sobre a imagem */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 400px;
+}
+
+.atributos-imagem {
+    width: 100%;
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+
+
+.atributos-imagem {
+    width: 100%;
+    max-width: 350px;
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+.atributos-direita {
+    width: 50%;
+}
+
+.attr-input {
+    position: absolute;
+    background: transparent;
+    border: none;
+    color: white;
+    font-family: 'Special Elite', monospace;
+    font-size: 2.5em;
+    font-weight: bold;
+    width: 60px;
+    text-align: center;    
+    -webkit-appearance: none;
+    -moz-appearance: textfield;
+    line-height: 1.2em; /* ADICIONE ESTA LINHA */
+}
+
+.attr-input:focus {
+    outline: none;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+}
+
+.combat-stats {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    gap: 20px;
+    border-top: none;
+    margin-top: 0;
+    padding-top: 20px;
+}
+
+.defesa-shield {
+    width: 90px;
+    height: 90px;
+    background-image: url('https://i.postimg.cc/Y9yR3n2K/shield-icon-FCvc8PM4.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.defesa-detalhes {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+#defesa-total {
+    font-size: 2em;
+    font-weight: bold;
+    color: #fff;
+}
+
+.defesa-formula {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.defesa-formula .titulo {
+    font-size: 1.2em;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.formula-linha {
+    display: flex;
+    align-items: flex-end; /* Alinha pela base para o texto ficar junto da linha */
+    gap: 8px; /* Aumentei o espaçamento para ficar mais legível */
+    color: #aaa;
+}
+
+.formula-input {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px; /* Adiciona um pequeno espaço entre a linha e o texto */
+}
+
+.formula-input input {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid #fff;
+    color: #fff;
+    width: 40px;
+    text-align: center;
+    font-size: 1.2em;
+    -moz-appearance: textfield;
+}
+.formula-input input::-webkit-outer-spin-button,
+.formula-input input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.formula-input label {
+    font-size: 0.8em;
+    color: #aaa;
+}
+
+.outros-stats {
+    padding-top: 25px;
+    display: flex;
+    gap: 50px;
+    justify-content: flex-start; /* Alinha à esquerda dentro do seu contêiner */
+}
+
+.stat-bloco {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px; /* Adiciona um pequeno espaço entre o texto e a linha */
+}
+
+.stat-bloco label {
+    font-size: 1.2em;
+    letter-spacing: 1px;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.stat-bloco input {
+    width: 50px;
+    height: 50px;
+    background: transparent;
+    border: none;
+    color: #ccc;
+    text-align: center;
+    font-size: 1.8em;
+    margin-top: 10px; /* Remove a margem antiga */
+    -moz-appearance: textfield;
+    font-family: 'Special Elite', monospace;
+    border: 1px solid #ffffffbc;
+}
+
+.stat-bloco input::-webkit-outer-spin-button,
+.stat-bloco input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+#attr-agi { top: 7%; left: 51%; transform: translateX(-50%); }
+#attr-int { top: 29%; right: 6.3%; }
+#attr-for { top: 29%; left: 8.5%; }
+#attr-vig { bottom: 16%; right: 16%; }
+#attr-pre { bottom: 16%; left: 18%; }
+
+
+.pericia-input:focus {
+    outline: none;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+
+/* ...todo o seu CSS anterior permanece aqui... */
+
+/* --- ESTILOS ATUALIZADOS PARA A SEÇÃO DE PERÍCIAS --- */
+.pericias-tabela {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.pericias-tabela th,
+.pericias-tabela td {
+    border: 5px solid #ffffff00;
+    padding: 2px 8px;
+    text-align: left;
+    transition: color 0.3s ease;
+}
+
+/* NOVO: Remove a borda das células do cabeçalho */
+.pericias-tabela thead th {
+    border: none;
+    color: #ffffff; /* Cor amarela para "Perícia", "Dados", etc. */
+    font-size: 0.9em;
+    
+}
+
+.pericias-tabela tbody td {
+    color: #aaa;
+    font-size: 0.9em;
+}
+
+/* NOVO: Adiciona um fundo para as linhas pares (tbody para não afetar o cabeçalho) */
+.pericias-tabela tbody tr:nth-child(even) {
+    background-color: rgba(255, 255, 255, 0.1); /* Fundo branco com baixa opacidade */
+}
+
+/* NOVO: Classe que será adicionada via JS para deixar o texto verde */
+.pericias-tabela tr.treinada td {
+    color: #3D8B40;
+    
+}
+/* Força a cor verde também no atributo (ex: AGI, PRE) que tem uma cor mais clara */
+.pericias-tabela tr.treinada td:nth-child(2) {
+    color: #3D8B40;
+}
+
+.pericias-tabela td {
+    font-size: 0.9em;
+    
+}
+
+/* Define a largura de cada coluna da tabela */
+.pericias-tabela th:nth-child(1) { width: 55%; }
+.pericias-tabela th:nth-child(2) { width: 20%; }
+.pericias-tabela th:nth-child(3) { width: 15%; }
+.pericias-tabela th:nth-child(4) { width: 15%; }
+
+.pericias-tabela th:nth-child(2),
+.pericias-tabela td:nth-child(2) {
+    text-align: center;
+    
+}
+
+.pericia-input {
+    width: 100%;
+    background: transparent;
+    border: none;
+    color: inherit;
+    font-family: 'Special Elite', monospace;
+    font-size: 1em;
+    padding: 0;
+    text-align: center;
+}
+
+.pericia-input:focus {
+    outline: none;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.attr-value {
+    margin-left: 4px; /* Adiciona um pequeno espaço */
+}
+
+
+.container-ataques {
+    margin-top: 40px;
+    justify-content: center;
+}
+
+.ataques-container {
+    width: 100%;
+}
+
+.ataques-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #fff;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+}
+
+.ataques-header h2 {
+    margin: 0;
+}
+
+.add-btn {
+    background: none;
+    border: 1px solid #fff;
+    color: #fff;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    font-size: 1.5em;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.ataques-lista-header, .ataque-item {
+    display: flex;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid #ffffff10;
+}
+
+.ataques-lista-header {
+    font-weight: bold;
+    color: #fff; /* Cor amarela do cabeçalho de perícias */
+}
+
+.ataque-item {
+    color: #aaa;
+}
+
+/* Define as larguras das colunas de ataque */
+.col-ataque { width: 25%; }
+.col-teste { width: 15%; text-align: center; }
+.col-dano { width: 15%; text-align: center; }
+.col-critico { width: 15%; text-align: center; }
+.col-alcance { width: 15%; text-align: center; }
+.col-tipo { width: 10%; text-align: center; }
+.col-acoes { width: 5%; text-align: right; }
+
+.delete-ataque-btn {
+    background: none;
+    border: none;
+    color: #b22222;
+    font-family: 'Special Elite', monospace;
+    font-size: 1.2em;
+    cursor: pointer;
+}
+
+.delete-btn-modal {
+    background: none;
+    border: 1px solid #b22222;
+    color: #b22222;
+    padding: 10px 20px;
+    font-family: 'Special Elite', monospace;
+    font-size: 1.1em;
+    cursor: pointer;
+    margin-right: auto; /* Empurra o botão para a esquerda */
+    display: none; /* Começa escondido */
+}
+
+.delete-btn-modal.visible {
+    display: block; /* Torna visível quando necessário */
+}
+
+button {
+    background-color: #00000000;
+    color: white;
+}
+
+.container-inventario {
+    margin-top: 40px;
+    justify-content: center;
+}
+
+.inventario-container {
+    width: 100%;
+}
+
+.inventario-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+    color: #ffffff;
+    padding: 5px 0px;
+    font-size: 1.2em;
+    
+}
+
+.inventario-header h2 {
+    margin: 0;
+    font-size: 1.2em;
+}
+
+.carga-max-display {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    color: #aaa;
+    cursor: pointer;
+}
+
+.carga-valores {
+    background-color: #000;
+    border: 1px solid #fff;
+    padding: 5px 20px;
+    padding-top: 10px;
+    color: #fff;
+}
+
+.inventario-colunas {
+    display: flex;
+    gap: 20px;
+}
+
+.inventario-tabela {
+    width: 50%;
+    border-collapse: collapse;
+}
+
+.inventario-tabela th,
+.inventario-tabela td {
+    border: 1px solid #ffffff51;
+}
+
+.inventario-tabela th {
+    background-color: #fff;
+    color: #000;
+    padding: 5px;
+    text-align: left;
+}
+
+.inventario-tabela th:last-child {
+    width: 25%;
+    text-align: center;
+}
+
+/* CORREÇÃO AQUI: Removemos o padding da célula */
+.inventario-tabela td {
+    padding: 0; 
+}
+
+/* CORREÇÃO AQUI: Adicionamos o padding diretamente ao input */
+.inventario-input {
+    width: 100%;
+    height: 100%; /* Faz o input preencher a altura da célula */
+    box-sizing: border-box; /* Garante que o padding não aumente o tamanho total */
+    background: transparent;
+    border: none;
+    color: #fff;
+    font-family: 'Special Elite', monospace;
+    font-size: 1em;
+    padding-top: 12px;
+    padding-bottom: 8px;
+    padding-left: 15px;
+    letter-spacing: 0.8px;
+}
+
+.inventario-input:focus {
+    outline: none; /* Adicionado para remover a borda azul ao clicar */
+}
+
+.inventario-input[type="number"] {
+    text-align: center;
+    -moz-appearance: textfield;
+}
+.inventario-input::-webkit-outer-spin-button,
+.inventario-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.campo select option {
+    background-color: #fff; /* Define um fundo branco (para consistência) */
+    color: #000;           /* Define o texto como preto */
+}

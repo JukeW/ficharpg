@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ficha de Personagem RPG</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- CONTAINER SUPERIOR (DETALHES E FICHA) -->
+    <div class="container">
+        <!-- Seção de Detalhes Pessoais -->
+        <div class="detalhes-pessoais">
+            <h2>DETALHES PESSOAIS</h2>
+            <div class="campo">
+                <label for="nome">Nome</label>
+                <input type="text" id="nome" value="">
+            </div>
+            <div class="campo">
+                <label for="jogador">Jogador</label>
+                <input type="text" id="jogador" value="">
+            </div>
+            <div class="campo">
+                <label for="ocupacao">Ocupação</label>
+                <input type="text" id="ocupacao" value="">
+            </div>
+            <div class="campo">
+                <label for="idade">Idade</label>
+                <input type="number" id="idade" value="">
+            </div>
+            <div class="campo">
+                <label for="sexo">Gênero</label>
+                <select id="sexo">
+                    <option value="feminino" selected>Feminino</option>
+                    <option value="masculino">Masculino</option>
+                    <option value="nao-binario">Não Binário</option>
+                </select>
+            </div>
+            <div class="campo">
+                <label for="nascimento">Local de nascimento</label>
+                <input type="text" id="nascimento" value="">
+            </div>
+            <div class="campo">
+                <label for="residencia">Local de residência</label>
+                <input type="text" id="residencia" value="">
+            </div>
+        </div>
+
+        <!-- Seção da Ficha do Personagem -->
+        <div class="ficha-personagem">
+            <div id="portrait-container" class="portrait-container">
+                <img src="https://i.imgur.com/cT3T7QL.png" alt="Portrait do Personagem" id="portrait" class="portrait-img">
+            </div>
+            <div class="status-container" data-stat="pv" data-stat-name="PV">
+                <div class="status-header">
+                    <span>Vida (PV)</span>
+                    <div class="controles">
+                        <button class="control-btn" data-action="decrease" data-stat="pv">-</button>
+                        <button class="control-btn" data-action="increase" data-stat="pv">+</button>
+                    </div>
+                </div>
+                <div class="barra-fundo barra-fundo-pv">
+                    <div id="barra-pv" class="barra-progresso vida" style="width: 100%;"></div>
+                    <span id="texto-pv" class="texto-barra"></span>
+                </div>
+                <div class="condicoes">
+                    <input type="checkbox" id="lesionado"> <label for="lesionado">Lesionado</label>
+                    <input type="checkbox" id="inconsciente"> <label for="inconsciente">Inconsciente</label>
+                    <input type="checkbox" id="morrendo"> <label for="morrendo">Morrendo</label>
+                </div>
+            </div>
+            <div class="status-container" data-stat="san" data-stat-name="Sanidade">
+                <div class="status-header">
+                    <span>Sanidade (SAN)</span>
+                    <div class="controles">
+                        <button class="control-btn" data-action="decrease" data-stat="san">-</button>
+                        <button class="control-btn" data-action="increase" data-stat="san">+</button>
+                    </div>
+                </div>
+                <div class="barra-fundo barra-fundo-san">
+                    <div id="barra-san" class="barra-progresso sanidade" style="width: 68.75%;"></div>
+                     <span id="texto-san" class="texto-barra"></span>
+                </div>
+                <div class="condicoes">
+                    <input type="checkbox" id="pertubado"> <label for="pertubado">Pertubado</label>
+                    <input type="checkbox" id="enlouquecido"> <label for="enlouquecido">Enlouquecido</label>
+                </div>
+            </div>
+            <div class="status-container" data-stat="ph" data-stat-name="PH">
+                <div class="status-header">
+                    <span>Pontos de Habilidade (PH)</span>
+                     <div class="controles">
+                        <button class="control-btn" data-action="decrease" data-stat="ph">-</button>
+                        <button class="control-btn" data-action="increase" data-stat="ph">+</button>
+                    </div>
+                </div>
+                 <div class="barra-fundo barra-fundo-ph">
+                    <div id="barra-ph" class="barra-progresso habilidade" style="width: 0%;"></div>
+                    <span id="texto-ph" class="texto-barra"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CONTAINER INFERIOR (ATRIBUTOS) -->
+    <div class="container container-atributos">
+        <div class="atributos-visual">
+            <div class="atributos-imagem-container">
+                <img src="https://i.postimg.cc/R0KGRVk8/unnamed.png" alt="Fundo dos Atributos" class="atributos-imagem">
+                <input type="number" class="attr-input" id="attr-agi" data-attr="agi" value="0">
+                <input type="number" class="attr-input" id="attr-for" data-attr="for" value="0">
+                <input type="number" class="attr-input" id="attr-int" data-attr="int" value="0">
+                <input type="number" class="attr-input" id="attr-pre" data-attr="pre" value="0">
+                <input type="number" class="attr-input" id="attr-vig" data-attr="vig" value="0">
+            </div>
+            <div class="combat-stats">
+                <div class="defesa-shield">
+                    <span id="defesa-total">11</span>
+                </div>
+                <div class="defesa-detalhes">
+                    <div class="defesa-formula">
+                        <span class="titulo">DEFESA</span>
+                        <div class="formula-linha">
+                            <span>= 10 + AGI +</span>
+                            <div class="formula-input">
+                                <input type="number" id="equip-bonus" value="0">
+                                <label for="equip-bonus">Equip.</label>
+                            </div>
+                            <span>+</span>
+                            <div class="formula-input">
+                                <input type="number" id="outros-bonus" value="0">
+                                <label for="outros-bonus">Outros.</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+            <div class="outros-stats">
+                        <div class="stat-bloco">
+                            <label for="desloc-valor" >DESLOC.</label>
+                            <input type="number" id="desloc-valor" value="0">
+                        </div>
+                        <div class="stat-bloco">
+                            <label for="esquiva-valor">ESQUIVA</label>
+                            <input type="number" id="esquiva-valor" value="11">
+                        </div>
+                    </div>
+        </div>
+        <div class="atributos-direita">
+            <table class="pericias-tabela">
+                <thead>
+                    <tr>
+                        <th>PERÍCIA</th>
+                        <th>DADOS</th>
+                        <th>TREINO</th>
+                        <th>BÔNUS</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Acrobacia</td>
+                        <td data-skill-attr="agi">AGI <span class="attr-value"></span></td>
+                        <td><input type="text" class="pericia-input" id="pericia-acrobacia-treino"></td>
+                        <td><input type="text" class="pericia-input" id="pericia-acrobacia-bonus"></td>
+                    </tr>
+                    <tr>
+                        <td>Adestramento</td>
+                        <td data-skill-attr="pre">PRE <span class="attr-value"></span></td>
+                        <td><input type="text" class="pericia-input" id="pericia-adestramento-treino"></td>
+                        <td><input type="text" class="pericia-input" id="pericia-adestramento-bonus"></td>
+                    </tr>
+                    <tr>
+                        <td>Artes</td>
+                        <td data-skill-attr="pre">PRE <span class="attr-value"></span></td>
+                        <td><input type="text" class="pericia-input" id="pericia-artes-treino"></td>
+                        <td><input type="text" class="pericia-input" id="pericia-artes-bonus"></td>
+                    </tr>
+                    <tr>
+                        <td>Atletismo</td>
+                        <td data-skill-attr="for">FOR <span class="attr-value"></span></td>
+                        <td><input type="text" class="pericia-input" id="pericia-atletismo-treino"></td>
+                        <td><input type="text" class="pericia-input" id="pericia-atletismo-bonus"></td>
+                    </tr>
+                    <tr>
+                        <td>Atualidades</td>
+                        <td data-skill-attr="int">INT <span class="attr-value"></span></td>
+                        <td><input type="text" class="pericia-input" id="pericia-atualidades-treino"></td>
+                        <td><input type="text" class="pericia-input" id="pericia-atualidades-bonus"></td>
+                    </tr>
+                    <tr>
+                        <td>Cibertecnologia</td>
+                        <td data-skill-attr="int">INT <span class="attr-value"></span></td>
+                        <td><input type="text" class="pericia-input" id="pericia-cibertecnologia-treino"></td>
+                        <td><input type="text" class="pericia-input" id="pericia-cibertecnologia-bonus"></td>
+                    </tr>
+                    <tr>
+                        <td>Ciências</td>
+                        <td data-skill-attr="int">INT <span class="attr-value"></span></td>
+                        <td><input type="text" class="pericia-input" id="pericia-ciencias-treino"></td>
+                        <td><input type="text" class="pericia-input" id="pericia-ciencias-bonus"></td>
+                    </tr>
+                    <tr>
+                        <td>Crime</td>
+                        <td data-skill-attr="agi">AGI <span class="attr-value"></span></td>
+                        <td><input type="text" class="pericia-input" id="pericia-crime-treino"></td>
+                        <td><input type="text" class="pericia-input" id="pericia-crime-bonus"></td>
+                    </tr>
+                    <tr>
+                        <td>Diplomacia</td>
+                        <td data-skill-attr="pre">PRE <span class="attr-value"></span></td>
+                        <td><input type="text" class="pericia-input" id="pericia-diplomacia-treino"></td>
+                        <td><input type="text" class="pericia-input" id="pericia-diplomacia-bonus"></td>
+                    </tr>
+                    <tr>
+                        <td>Enganação</td>
+                        <td data-skill-attr="pre">PRE <span class="attr-value"></span></td>
+                        <td><input type="text" class="pericia-input" id="pericia-enganacao-treino"></td>
+                        <td><input type="text" class="pericia-input" id="pericia-enganacao-bonus"></td>
+                    </tr>
+                    <tr>
+                        <td>Fortitude</td>
+                        <td data-skill-attr="vig">VIG <span class="attr-value"></span></td>
+                        <td><input type="text" class="pericia-input" id="pericia-fortitude-treino"></td>
+                        <td><input type="text" class="pericia-input" id="pericia-fortitude-bonus"></td>
+                    </tr>
+                    <tr>
+                        <td>Furtividade</td>
+                        <td data-skill-attr="agi">AGI <span class="attr-value"></span></td>
+                        <td><input type="text" class="pericia-input" id="pericia-furtividade-treino"></td>
+                        <td><input type="text" class="pericia-input" id="pericia-furtividade-bonus"></td>
+                    </tr>
+                    <tr>
+                        <td>Iniciativa</td>
+                        <td data-skill-attr="agi">AGI <span class="attr-value"></span></td>
+                        <td><input type="text" class="pericia-input" id="pericia-iniciativa-treino"></td>
+                        <td><input type="text" class="pericia-input" id="pericia-iniciativa-bonus"></td>
+                    </tr>
+                    <tr>
+                        <td>Intimidação</td>
+                        <td data-skill-attr="pre">PRE <span class="attr-value"></span></td>
+                        <td><input type="text" class="pericia-input" id="pericia-intimidacao-treino"></td>
+                        <td><input type="text" class="pericia-input" id="pericia-intimidacao-bonus"></td>
+                    </tr>
+                    <tr>
+                        <td>Intuição</td>
+                        <td data-skill-attr="pre">PRE <span class="attr-value"></span></td>
+                        <td><input type="text" class="pericia-input" id="pericia-intuicao-treino"></td>
+                        <td><input type="text" class="pericia-input" id="pericia-intuicao-bonus"></td>
+                    </tr>
+                    <tr>
+                        <td>Investigação</td>
+                        <td data-skill-attr="int">INT <span class="attr-value"></span></td>
+                        <td><input type="text" class="pericia-input" id="pericia-investigacao-treino"></td>
+                        <td><input type="text" class="pericia-input" id="pericia-investigacao-bonus"></td>
+                    </tr>
+                    <tr>
+                        <td>Luta</td>
+                        <td data-skill-attr="for">FOR <span class="attr-value"></span></td>
+                        <td><input type="text" class="pericia-input" id="pericia-luta-treino"></td>
+                        <td><input type="text" class="pericia-input" id="pericia-luta-bonus"></td>
+                    </tr>
+                    <tr>
+                        <td>Medicina</td>
+                        <td data-skill-attr="int">INT <span class="attr-value"></span></td>
+                        <td><input type="text" class="pericia-input" id="pericia-medicina-treino"></td>
+                        <td><input type="text" class="pericia-input" id="pericia-medicina-bonus"></td>
+                    </tr>
+                    <tr>
+                        <td>Percepção</td>
+                        <td data-skill-attr="pre">PRE <span class="attr-value"></span></td>
+                        <td><input type="text" class="pericia-input" id="pericia-percepcao-treino"></td>
+                        <td><input type="text" class="pericia-input" id="pericia-percepcao-bonus"></td>
+                    </tr>
+                    <tr>
+                        <td>Pilotagem</td>
+                        <td data-skill-attr="agi">AGI <span class="attr-value"></span></td>
+                        <td><input type="text" class="pericia-input" id="pericia-pilotagem-treino"></td>
+                        <td><input type="text" class="pericia-input" id="pericia-pilotagem-bonus"></td>
+                    </tr>
+                    <tr>
+                        <td>Pontaria</td>
+                        <td data-skill-attr="agi">AGI <span class="attr-value"></span></td>
+                        <td><input type="text" class="pericia-input" id="pericia-pontaria-treino"></td>
+                        <td><input type="text" class="pericia-input" id="pericia-pontaria-bonus"></td>
+                    </tr>
+                    <tr>
+                        <td>Profissão</td>
+                        <td data-skill-attr="int">INT <span class="attr-value"></span></td>
+                        <td><input type="text" class="pericia-input" id="pericia-profissao-treino"></td>
+                        <td><input type="text" class="pericia-input" id="pericia-profissao-bonus"></td>
+                    </tr>
+                    <tr>
+                        <td>Psique</td>
+                        <td data-skill-attr="pre">PRE <span class="attr-value"></span></td>
+                        <td><input type="text" class="pericia-input" id="pericia-psique-treino"></td>
+                        <td><input type="text" class="pericia-input" id="pericia-psique-bonus"></td>
+                    </tr>
+                    <tr>
+                        <td>Reflexos</td>
+                        <td data-skill-attr="agi">AGI <span class="attr-value"></span></td>
+                        <td><input type="text" class="pericia-input" id="pericia-reflexos-treino"></td>
+                        <td><input type="text" class="pericia-input" id="pericia-reflexos-bonus"></td>
+                    </tr>
+                    <tr>
+                        <td>Robótica</td>
+                        <td data-skill-attr="int">INT <span class="attr-value"></span></td>
+                        <td><input type="text" class="pericia-input" id="pericia-robotica-treino"></td>
+                        <td><input type="text" class="pericia-input" id="pericia-robotica-bonus"></td>
+                    </tr>
+                    <tr>
+                        <td>Sobrevivência</td>
+                        <td data-skill-attr="int">INT <span class="attr-value"></span></td>
+                        <td><input type="text" class="pericia-input" id="pericia-sobrevivencia-treino"></td>
+                        <td><input type="text" class="pericia-input" id="pericia-sobrevivencia-bonus"></td>
+                    </tr>
+                    <tr>
+                        <td>Tecnologia</td>
+                        <td data-skill-attr="int">INT <span class="attr-value"></span></td>
+                        <td><input type="text" class="pericia-input" id="pericia-tecnologia-treino"></td>
+                        <td><input type="text" class="pericia-input" id="pericia-tecnologia-bonus"></td>
+                    </tr>
+                    <tr>
+                        <td>Vontade</td>
+                        <td data-skill-attr="pre">PRE <span class="attr-value"></span></td>
+                        <td><input type="text" class="pericia-input" id="pericia-vontade-treino"></td>
+                        <td><input type="text" class="pericia-input" id="pericia-vontade-bonus"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="container container-ataques">
+        <div class="ataques-container">
+            <div class="ataques-header">
+                <h2>ATAQUES</h2>
+                <button id="add-ataque-btn" class="add-btn">+</button>
+            </div>
+            <div class="ataques-lista-header">
+                <span class="col-ataque">Ataque</span>
+                <span class="col-teste">Teste</span>
+                <span class="col-dano">Dano</span>
+                <span class="col-critico">Crítico</span>
+                <span class="col-alcance">Alcance</span>
+                <span class="col-tipo">Tipo</span>
+                <span class="col-acoes"></span>
+            </div>
+            <div id="ataques-lista">
+                <!-- Os ataques adicionados via JS aparecerão aqui -->
+            </div>
+        </div>
+    </div>
+
+    <div class="container container-inventario">
+        <div class="inventario-container">
+            <div class="inventario-header">
+                <h2>INVENTÁRIO</h2>
+                <div id="carga-max-container" class="carga-max-display">
+                    <span>Carga Máx</span>
+                    <div class="carga-valores">
+                        <span id="carga-atual">0.0</span>/<span id="carga-maxima">8</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="inventario-colunas">
+                <!-- Coluna Esquerda -->
+                <table class="inventario-tabela">
+                    <thead>
+                        <tr>
+                            <th>ITEM</th>
+                            <th>Peso</th>
+                        </tr>
+                    </thead>
+                    <!-- O JS vai preencher aqui -->
+                    <tbody id="inventario-esquerda"></tbody>
+                </table>
+                <!-- Coluna Direita -->
+                <table class="inventario-tabela">
+                    <thead>
+                        <tr>
+                            <th>ITEM</th>
+                            <th>Peso</th>
+                        </tr>
+                    </thead>
+                    <!-- O JS vai preencher aqui -->
+                    <tbody id="inventario-direita"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAIS -->
+    <div id="modal-portraits" class="modal">
+        <div class="modal-content">
+            <span class="close-button" data-modal-id="modal-portraits">&times;</span>
+            <h2>Adicione a URL dos Portraits Interativos</h2>
+            <div class="url-campo">
+                <label for="url-normal">Normal</label>
+                <input type="text" id="url-normal" value="https://i.imgur.com/cT3T7QL.png">
+            </div>
+            <div class="url-campo">
+                <label for="url-lesionado">Lesionado</label>
+                <input type="text" id="url-lesionado" value="https://i.imgur.com/saNG1U9.png">
+            </div>
+            <div class="url-campo">
+                <label for="url-inconsciente-morrendo">Inconsciente / Morrendo</label>
+                <input type="text" id="url-inconsciente-morrendo" value="https://i.imgur.com/Xj2fTPu.png">
+            </div>
+            <div class="url-campo">
+                <label for="url-pertubado-enlouquecido">Pertubado / Enlouquecido</label>
+                <input type="text" id="url-pertubado-enlouquecido" value="https://i.imgur.com/tCSVn2b.png">
+            </div>
+            <div class="url-campo">
+                <label for="url-lesionado-pertubado">Lesionado + Pertubado / Insano</label>
+                <input type="text" id="url-lesionado-pertubado" value="https://i.imgur.com/jh8TUBU.png">
+            </div>
+            <button id="adicionar-urls">Adicionar</button>
+        </div>
+    </div>
+    <div id="modal-stats" class="modal">
+        <div class="modal-content">
+            <span class="close-button" data-modal-id="modal-stats">&times;</span>
+            <h2 id="modal-stats-title">Adicione ou Remova PV</h2>
+            <div class="stats-input-campo">
+                <label id="stat-atual-label" for="stat-atual">PV Atual</label>
+                <input type="number" id="stat-atual">
+            </div>
+            <div class="stats-input-campo">
+                <label id="stat-max-label" for="stat-max">PV Máximo</label>
+                <input type="number" id="stat-max">
+            </div>
+            <div class="modal-botoes">
+                <button id="resetar-stat">Resetar</button>
+                <button id="salvar-stat">Adicionar</button> 
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-gerenciar-ataque" class="modal">
+        <div class="modal-content">
+            <span class="close-button" data-modal-id="modal-gerenciar-ataque">&times;</span>
+            <h2 id="modal-ataque-title">Adicionar Novo Ataque</h2>
+            <div class="campo">
+                <label for="ataque-nome">Ataque</label>
+                <input type="text" id="ataque-nome">
+            </div>
+            <div class="campo">
+                <label for="ataque-pericia">Teste</label>
+                <select id="ataque-pericia">
+                    <option value="luta">Luta</option>
+                    <option value="pontaria">Pontaria</option>
+                    <option value="acrobacia">Acrobacia</option>
+                    <option value="atletismo">Atletismo</option>
+                    <option value="furtividade">Furtividade</option>
+                </select>
+            </div>
+            <div class="campo">
+                <label for="ataque-dano">Dano</label>
+                <input type="text" id="ataque-dano">
+            </div>
+            <div class="campo">
+                <label for="ataque-critico">Crítico</label>
+                <input type="text" id="ataque-critico">
+            </div>
+            <div class="campo">
+                <label for="ataque-alcance">Alcance</label>
+                <select id="ataque-alcance">
+                    <option value="Corpo-a-corpo">Corpo-a-corpo</option>
+                    <option value="Curto">Curto</option>
+                    <option value="Médio">Médio</option>
+                    <option value="Longo">Longo</option>
+                </select>
+            </div>
+            <div class="campo">
+                <label for="ataque-tipo">Tipo</label>
+                <select id="ataque-tipo">
+                    <option value="Balístico">Balístico</option>
+                    <option value="Corte">Corte</option>
+                    <option value="Eletricidade">Eletricidade</option>
+                    <option value="Fogo">Fogo</option>
+                    <option value="Frio">Frio</option>
+                    <option value="Impacto">Impacto</option>
+                    <option value="Perfuração">Perfuração</option>
+                    <option value="Mental">Mental</option>
+                </select>
+            </div>
+            <!-- NOVO CAMPO PESO -->
+            <div class="campo">
+                <label for="ataque-peso">Peso</label>
+                <input type="number" step="0.1" id="ataque-peso">
+            </div>
+
+            <div class="modal-botoes">
+                <!-- NOVO BOTÃO DELETAR (aparecerá ao editar) -->
+                <button id="deletar-ataque-btn" class="delete-btn-modal">Deletar Ataque</button>
+                <button id="salvar-ataque-btn">Adicionar</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-carga-max" class="modal">
+        <div class="modal-content">
+            <span class="close-button" data-modal-id="modal-carga-max">&times;</span>
+            <h2>Alterar Carga Máxima</h2>
+            <div class="campo">
+                <label for="carga-max-input">Carga Máxima</label>
+                <input type="number" id="carga-max-input">
+            </div>
+            <div class="modal-botoes">
+                <button id="salvar-carga-max-btn">Salvar</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="firebase-config.js"></script>
+
+    <script type="module" src="script.js"></script>
+</body>
+</html>
