@@ -232,6 +232,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const barraId = `municao-${index}`;
             const barraHtml = `
                 <div class="municao-barra-container">
+                    <h3>— MUNIÇÃO </h3>
                     <div class="status-header">
                         <span>${ataque.nome}</span>
                         <div class="controles">
