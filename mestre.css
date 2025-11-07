@@ -63,8 +63,16 @@ body {
     text-shadow: 0 0 8px #ff00ff, 0 0 12px #ff00ff, 0 0 16px #ff00ff;
 }
 .stat-municao {
-    color: #ffffff;
-    text-shadow: 0 0 8px #ffe60063, 0 0 12px #ffe60063, 0 0 16px #ffe60063;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: opacity 0.3s ease-in-out; /* Adiciona uma transição suave */
+}
+
+/* NOVA REGRA PARA ESCONDER SEM MUDAR O LAYOUT */
+.stat-municao.hidden {
+    visibility: hidden;
+    opacity: 0;
 }
 
 .stat-municao span {
