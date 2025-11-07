@@ -67,6 +67,7 @@ body {
     align-items: center;
     gap: 10px;
     transition: opacity 0.3s ease-in-out; /* Adiciona uma transição suave */
+    text-shadow: 0 0 8px #ffe60063, 0 0 12px #ffe60063, 0 0 16px #ffe60063;
 }
 
 /* NOVA REGRA PARA ESCONDER SEM MUDAR O LAYOUT */
@@ -76,9 +77,9 @@ body {
 }
 
 .stat-municao span {
-    position: relative;
-    top: 30px; /* ajuste até ficar na posição desejada */
+    margin-bottom: 20px; /* ajuste até ficar na posição desejada */
     font-size: 0.8em;
+    
 }
 
 .stat-municao img {
