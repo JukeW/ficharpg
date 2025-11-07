@@ -123,20 +123,18 @@ document.addEventListener('DOMContentLoaded', () => {
         phEl.textContent = data.status?.ph.atual || 0;
         const armaSelecionadaId = data.armaSelecionadaId;
     
-    if (armaSelecionadaId) {
-        // Encontra o ataque selecionado na lista de ataques
-        const arma = data.ataques?.find(ataque => ataque.nome === armaSelecionadaId);
-        
-        if (arma && arma.municao) {
-            municaoContainer.style.display = 'flex'; // Mostra o contêiner
-            municaoValor.textContent = `X ${arma.municao.atual}`;
+        if (armaSelecionadaId) {
+            const arma = data.ataques?.find(ataque => ataque.nome === armaSelecionadaId);
+            
+            if (arma && typeof arma.municao !== 'undefined') {
+                municaoContainer.classList.remove('hidden'); // <-- CORRIGIDO
+                municaoValor.textContent = `X ${arma.municao.atual}`;
+            } else {
+                municaoContainer.classList.add('hidden'); // <-- CORRIGIDO
+            }
         } else {
-            municaoContainer.style.display = 'none'; // Esconde se a arma não for encontrada ou não tiver munição
+            municaoContainer.classList.add('hidden'); // <-- CORRIGIDO
         }
-    } else {
-        // Se nenhuma arma estiver selecionada, esconde o contêiner
-        municaoContainer.style.display = 'none';
-    }
     }
     
     function resetPlayerCard(cardIndex) {
