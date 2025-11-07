@@ -107,6 +107,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const pvEl = document.getElementById(`pv-jogador${cardIndex}`);
         const sanEl = document.getElementById(`san-jogador${cardIndex}`);
         const phEl = document.getElementById(`ph-jogador${cardIndex}`);
+        const municaoContainer = document.getElementById(`municao-jogador${cardIndex}`);
+        const municaoValor = document.getElementById(`municao-valor-jogador${cardIndex}`);
         let portraitUrl = data.urls?.normal || 'https://i.imgur.com/cT3T7QL.png';
         if (data.condicoes) {
             const { lesionado, inconsciente, morrendo, pertubado, enlouquecido } = data.condicoes;
@@ -119,6 +121,22 @@ document.addEventListener('DOMContentLoaded', () => {
         pvEl.textContent = `${data.status?.pv.atual || 0}/${data.status?.pv.max || 0}`;
         sanEl.textContent = `${data.status?.san.atual || 0}/${data.status?.san.max || 0}`;
         phEl.textContent = data.status?.ph.atual || 0;
+        const armaSelecionadaId = data.armaSelecionadaId;
+    
+    if (armaSelecionadaId) {
+        // Encontra o ataque selecionado na lista de ataques
+        const arma = data.ataques?.find(ataque => ataque.nome === armaSelecionadaId);
+        
+        if (arma && arma.municao) {
+            municaoContainer.style.display = 'flex'; // Mostra o contêiner
+            municaoValor.textContent = `X ${arma.municao.atual}`;
+        } else {
+            municaoContainer.style.display = 'none'; // Esconde se a arma não for encontrada ou não tiver munição
+        }
+    } else {
+        // Se nenhuma arma estiver selecionada, esconde o contêiner
+        municaoContainer.style.display = 'none';
+    }
     }
     
     function resetPlayerCard(cardIndex) {
@@ -128,13 +146,38 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById(`ph-jogador${cardIndex}`).textContent = 'N/A';
     }
 
+    function carregarFichasSalvas() {
+        const savedId1 = localStorage.getItem('mestre-jogador1-id');
+        const savedId2 = localStorage.getItem('mestre-jogador2-id');
+
+        if (savedId1) {
+            jogador1IdInput.value = savedId1;
+        }
+        if (savedId2) {
+            jogador2IdInput.value = savedId2;
+        }
+
+        // Se encontramos algum ID salvo, clicamos no botão "Carregar" automaticamente
+        if (savedId1 || savedId2) {
+            carregarBtn.click();
+        }
+    }
+
+
     // --- EVENT LISTENERS ---
     carregarBtn.addEventListener('click', () => {
         if (unsubJogador1) unsubJogador1();
         if (unsubJogador2) unsubJogador2();
+
         const id1 = jogador1IdInput.value.trim();
         const id2 = jogador2IdInput.value.trim();
+        
+        // SALVA os IDs no localStorage
+        localStorage.setItem('mestre-jogador1-id', id1);
+        localStorage.setItem('mestre-jogador2-id', id2);
+
         loadedPlayerIds = { 1: id1, 2: id2 };
+
         if (id1) { unsubJogador1 = listenToPlayer(id1, 1); } else { resetPlayerCard(1); }
         if (id2) { unsubJogador2 = listenToPlayer(id2, 2); } else { resetPlayerCard(2); }
     });
@@ -198,4 +241,5 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.close-button').forEach(btn => btn.addEventListener('click', (e) => e.target.closest('.modal').classList.remove('active')));
     
     loadMestreData();
+    carregarFichasSalvas();
 });
