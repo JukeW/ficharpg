@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel do Mestre</title>
+    <link rel="stylesheet" href="mestre.css">
+</head>
+<body>
+
+    <div class="painel-container">
+
+        <!-- SEÇÃO DE VISUALIZAÇÃO (PARA O OBS) -->
+        <div class="visualizacao-container">
+            <!-- Card do Jogador 1 -->
+            <div class="jogador-card-obs" id="card-jogador1">
+                <div class="portrait-obs-container">
+                    <img src="https://i.imgur.com/cT3T7QL.png" alt="Portrait Jogador 1" id="portrait-jogador1">
+                </div>
+                <div class="stats-obs">
+                    <span class="stat-pv" id="pv-jogador1">1/1</span>
+                    <span class="stat-san" id="san-jogador1">1/1</span>
+                    <span class="stat-ph" id="ph-jogador1">1/1</span>
+                    <!-- MUNIÇÃO DO JOGADOR 1 NO LUGAR CORRETO -->
+                    <div class="stat-municao hidden" id="municao-jogador1">
+                        <img src="https://i.postimg.cc/wMkHz5Xw/bullet.png" alt="Ícone de Munição">
+                        <span id="municao-valor-jogador1">X 0</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Card do Jogador 2 -->
+            <div class="jogador-card-obs" id="card-jogador2">
+                <div class="portrait-obs-container">
+                    <img src="https://i.imgur.com/cT3T7QL.png" alt="Portrait Jogador 2" id="portrait-jogador2">
+                </div>
+                <div class="stats-obs">
+                    <span class="stat-pv" id="pv-jogador2">1/1</span>
+                    <span class="stat-san" id="san-jogador2">1/1</span>
+                    <span class="stat-ph" id="ph-jogador2">1/1</span>
+                    <!-- MUNIÇÃO DO JOGADOR 2 NO LUGAR CORRETO -->
+                    <div class="stat-municao hidden" id="municao-jogador2">
+                        <img src="https://i.postimg.cc/wMkHz5Xw/bullet.png" alt="Ícone de Munição">
+                        <span id="municao-valor-jogador2">X 0</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- SEÇÃO DE CONTROLES (FORA DO OBS) -->
+        <div class="secao-controles">
+            <div class="seletor-container">
+                <input type="text" id="jogador1-id-input" placeholder="ID Jogador 1" value="jogador1">
+                <input type="text" id="jogador2-id-input" placeholder="ID Jogador 2" value="jogador2">
+                <button id="carregar-jogadores-btn">Carregar Fichas</button>
+            </div>
+
+            <div class="secao-gerenciamento">
+                <!-- Gerenciador de Ataques -->
+                <div class="gerenciador-bloco">
+                    <div class="gerenciador-header">
+                        <h3>Adicionar Ataque</h3>
+                        <button class="add-btn-mestre" id="add-ataque-mestre-btn">+</button>
+                    </div>
+                    <ul class="lista-mestre" id="lista-ataques-mestre">
+                        <!-- Ataques do mestre aparecerão aqui -->
+                    </ul>
+                </div>
+                
+                <!-- Gerenciador de Itens -->
+                <div class="gerenciador-bloco">
+                    <div class="gerenciador-header">
+                        <h3>Adicionar Item</h3>
+                        <button class="add-btn-mestre" id="add-item-mestre-btn">+</button>
+                    </div>
+                    <ul class="lista-mestre" id="lista-itens-mestre">
+                        <!-- Itens do mestre aparecerão aqui -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </div> <!-- FIM painel-container -->
+
+    <div id="modal-gerenciar-item-mestre" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2 id="modal-item-title">Adicionar Novo Item</h2>
+            <div class="campo-mestre">
+                <label for="item-mestre-nome">Nome do Item</label>
+                <input type="text" id="item-mestre-nome">
+            </div>
+            <div class="campo-mestre">
+                <label for="item-mestre-peso">Peso</label>
+                <input type="number" step="0.1" id="item-mestre-peso">
+            </div>
+            <div class="modal-botoes-mestre">
+                <button id="deletar-item-mestre-btn" class="delete-btn-modal">Deletar</button>
+                <button id="salvar-item-mestre-btn">Adicionar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para Gerenciar Ataques (Adicionar/Editar) -->
+    <div id="modal-gerenciar-ataque-mestre" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2 id="modal-ataque-title-mestre">Adicionar Novo Ataque</h2>
+            <div class="campo-mestre">
+                <label for="ataque-mestre-nome">Ataque</label>
+                <input type="text" id="ataque-mestre-nome">
+            </div>
+            <div class="campo-mestre">
+                <label for="ataque-mestre-pericia">Teste</label>
+                <select id="ataque-mestre-pericia">
+                    <option value="luta">Luta</option>
+                    <option value="pontaria">Pontaria</option>
+                    <option value="acrobacia">Acrobacia</option>
+                    <option value="atletismo">Atletismo</option>
+                    <option value="furtividade">Furtividade</option>
+                </select>
+            </div>
+            <div class="campo-mestre">
+                <label for="ataque-mestre-dano">Dano</label>
+                <input type="text" id="ataque-mestre-dano">
+            </div>
+            <div class="campo-mestre">
+                <label for="ataque-mestre-critico">Crítico</label>
+                <input type="text" id="ataque-mestre-critico">
+            </div>
+            <div class="campo-mestre">
+                <label for="ataque-mestre-alcance">Alcance</label>
+                <select id="ataque-mestre-alcance">
+                    <option value="Corpo-a-corpo">Corpo-a-corpo</option>
+                    <option value="Curto">Curto</option>
+                    <option value="Médio">Médio</option>
+                    <option value="Longo">Longo</option>
+                </select>
+            </div>
+            <div class="campo-mestre">
+                <label for="ataque-mestre-tipo">Tipo</label>
+                <select id="ataque-mestre-tipo">
+                    <option value="Balístico">Balístico</option>
+                    <option value="Corte">Corte</option>
+                    <option value="Eletricidade">Eletricidade</option>
+                    <option value="Fogo">Fogo</option>
+                    <option value="Frio">Frio</option>
+                    <option value="Impacto">Impacto</option>
+                    <option value="Perfuração">Perfuração</option>
+                    <option value="Mental">Mental</option>
+                </select>
+            </div>
+            <div class="campo-mestre">
+                <label for="ataque-mestre-peso">Peso</label>
+                <input type="number" step="0.1" id="ataque-mestre-peso">
+            </div>
+            <div class="modal-botoes-mestre">
+                <button id="deletar-ataque-mestre-btn" class="delete-btn-modal">Deletar</button>
+                <button id="salvar-ataque-mestre-btn">Adicionar</button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Modal para Entregar Item/Ataque -->
+    <div id="modal-entregar" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2>Entregar Para:</h2>
+            <div class="entregar-opcoes">
+                <button id="entregar-jogador1-btn">Jogador 1</button>
+                <button id="entregar-jogador2-btn">Jogador 2</button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- SCRIPTS -->
+    <script type="module" src="firebase-config.js"></script>
+    <script type="module" src="mestre-script.js"></script>
+
+</body>
+</html>
