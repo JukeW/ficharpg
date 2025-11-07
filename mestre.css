@@ -62,6 +62,23 @@ body {
     color: #ffffff;
     text-shadow: 0 0 8px #ff00ff, 0 0 12px #ff00ff, 0 0 16px #ff00ff;
 }
+.stat-municao {
+    color: #ffffff;
+    text-shadow: 0 0 8px #ffe60063, 0 0 12px #ffe60063, 0 0 16px #ffe60063;
+}
+
+.stat-municao span {
+    position: relative;
+    top: 30px; /* ajuste até ficar na posição desejada */
+    font-size: 0.8em;
+}
+
+.stat-municao img {
+    width: 25px;
+    height: 69.5px;
+    vertical-align: middle;
+    margin-right: 18px;
+}
 
 
 /* --- SEÇÃO DE CONTROLES (ESTILO "FERRAMENTA" DO MESTRE) --- */
@@ -273,3 +290,4 @@ body {
     color: #fff;
     font-family: inherit;
 }
+
