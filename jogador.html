@@ -62,7 +62,11 @@
                 </div>
                 <div class="barra-fundo barra-fundo-pv">
                     <div id="barra-pv" class="barra-progresso vida" style="width: 100%;"></div>
-                    <span id="texto-pv" class="texto-barra"></span>
+                    <div id="texto-pv" class="texto-barra">
+                        <span class="valor-atual"></span>
+                        <span>/</span>
+                        <span class="valor-max"></span>
+                    </div>
                 </div>
                 <div class="condicoes">
                     <input type="checkbox" id="lesionado"> <label for="lesionado">Lesionado</label>
@@ -80,7 +84,11 @@
                 </div>
                 <div class="barra-fundo barra-fundo-san">
                     <div id="barra-san" class="barra-progresso sanidade" style="width: 68.75%;"></div>
-                     <span id="texto-san" class="texto-barra"></span>
+                    <div id="texto-san" class="texto-barra">
+                        <span class="valor-atual">22</span>
+                        <span>/</span>
+                        <span class="valor-max">32</span>
+                    </div>
                 </div>
                 <div class="condicoes">
                     <input type="checkbox" id="pertubado"> <label for="pertubado">Pertubado</label>
@@ -97,7 +105,11 @@
                 </div>
                  <div class="barra-fundo barra-fundo-ph">
                     <div id="barra-ph" class="barra-progresso habilidade" style="width: 0%;"></div>
-                    <span id="texto-ph" class="texto-barra"></span>
+                    <div id="texto-ph" class="texto-barra">
+                        <span class="valor-atual">0</span>
+                        <span>/</span>
+                        <span class="valor-max">0</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -142,10 +154,14 @@
                             <label for="desloc-valor" >DESLOC.</label>
                             <input type="number" id="desloc-valor" value="0">
                         </div>
+                        <div class="stat-bloco2">
+                            <label for="nivel-valor">NÍVEL</label>
+                            <input type="number" id="nivel-valor" value="0">
+                        </div>
                         <div class="stat-bloco">
                             <label for="esquiva-valor">ESQUIVA</label>
                             <input type="number" id="esquiva-valor" value="11">
-                        </div>
+                        </div>                        
                     </div>
         </div>
         <div class="atributos-direita">
@@ -353,6 +369,10 @@
         </div>
     </div>
 
+    <div class="container container-municao" id="container-municao">
+        <!-- As barras de munição aparecerão aqui -->
+    </div>
+
     <div class="container container-inventario">
         <div class="inventario-container">
             <div class="inventario-header">
@@ -487,7 +507,10 @@
                     <option value="Mental">Mental</option>
                 </select>
             </div>
-            <!-- NOVO CAMPO PESO -->
+            <div class="campo" id="campo-municao-max" style="display: none;">
+                <label for="ataque-municao-max">Munição Máxima</label>
+                <input type="number" id="ataque-municao-max" value="6">
+            </div>
             <div class="campo">
                 <label for="ataque-peso">Peso</label>
                 <input type="number" step="0.1" id="ataque-peso">
