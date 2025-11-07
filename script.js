@@ -46,6 +46,8 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     let ataques = [];
     let currentEditingAttackIndex = null;
+    let currentEditingStat = null;
+    let armaSelecionadaId = null;
     let inventario = [];
     let cargaMaxima = 8;
     let activeInputElement = null;
@@ -73,7 +75,8 @@ document.addEventListener('DOMContentLoaded', () => {
             pericias: {},
             ataques: ataques,
             inventario: inventario, // Salva o array de inventário
-            cargaMaxima: cargaMaxima
+            cargaMaxima: cargaMaxima,
+            armaSelecionadaId: armaSelecionadaId
         };
 
         document.querySelectorAll('.pericia-input').forEach(input => { fichaData.pericias[input.id] = input.value; });
@@ -204,6 +207,80 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    function renderMunicao() {
+        const container = document.getElementById('container-municao');
+        container.innerHTML = '';
+
+        const ataquesDePontaria = ataques.filter(ataque => ataque.pericia === 'pontaria');
+
+        if (ataquesDePontaria.length === 0) {
+            container.style.display = 'none';
+            return;
+        }
+
+        container.style.display = 'flex';
+
+        ataquesDePontaria.forEach((ataque, index) => {
+            // Se uma arma está selecionada, só mostra a barra dela
+            if (armaSelecionadaId && armaSelecionadaId !== ataque.nome) {
+                return; // Pula a renderização das outras barras
+            }
+            
+            // ... (código existente para garantir que os dados de munição existam) ...
+
+            const isChecked = armaSelecionadaId === ataque.nome ? 'checked' : '';
+            const barraId = `municao-${index}`;
+            const barraHtml = `
+                <div class="municao-barra-container">
+                    <div class="status-header">
+                        <span>${ataque.nome}</span>
+                        <div class="controles">
+                            <input type="checkbox" class="arma-select-check" data-nome-ataque="${ataque.nome}" ${isChecked}>
+                            <button class="control-btn-municao" data-action="decrease" data-index="${index}">-</button>
+                            <button class="control-btn-municao" data-action="increase" data-index="${index}">+</button>
+                        </div>
+                    </div>
+                    
+                    <!-- BLOCO QUE FALTAVA ADICIONADO ABAIXO -->
+                    <div class="barra-fundo barra-fundo-municao">
+                        <div id="barra-${barraId}" class="barra-progresso municao"></div>
+                        <div id="texto-${barraId}" class="texto-barra">
+                            <span class="valor-atual">${ataque.municao.atual}</span>
+                            <span>/</span>
+                            <span class="valor-max">${ataque.municao.max}</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+            container.innerHTML += barraHtml;
+            atualizarBarraMunicao(ataque.municao, barraId);
+        });
+    }
+
+
+    // NOVA FUNÇÃO: Atualiza uma barra de munição específica
+    function atualizarBarraMunicao(municaoData, barraId) {
+        const barraEl = document.getElementById(`barra-${barraId}`);
+        const textoEl = document.getElementById(`texto-${barraId}`);
+        if (!barraEl || !textoEl) return;
+
+        const spanAtual = textoEl.querySelector('.valor-atual');
+        const spanMax = textoEl.querySelector('.valor-max');
+
+        const maxParaBarra = municaoData.max > 0 ? municaoData.max : 1;
+        const porcentagem = (municaoData.atual / maxParaBarra) * 100;
+        
+        barraEl.style.width = `${Math.max(0, Math.min(100, porcentagem))}%`;
+        spanAtual.textContent = municaoData.atual;
+        spanMax.textContent = municaoData.max;
+
+        if (municaoData.atual > municaoData.max || municaoData.atual < 0) {
+            spanAtual.classList.add('excedido');
+        } else {
+            spanAtual.classList.remove('excedido');
+        }
+    }
+
     function updateDefense() {
         const agi = parseInt(document.getElementById('attr-agi').value) || 0;
         const equip = parseInt(document.getElementById('equip-bonus').value) || 0;
@@ -241,10 +318,28 @@ document.addEventListener('DOMContentLoaded', () => {
     function atualizarBarra(tipo) {
         const s = status[tipo];
         if (!s) return;
-        const max = s.max > 0 ? s.max : 1;
-        const porcentagem = (s.atual / max) * 100;
+
+        // Pega as referências para os novos spans
+        const spanAtual = s.texto.querySelector('.valor-atual');
+        const spanMax = s.texto.querySelector('.valor-max');
+
+        // Lógica da barra de progresso
+        const maxParaBarra = s.max > 0 ? s.max : 1;
+        const porcentagem = (s.atual / maxParaBarra) * 100;
+
+        // A barra visual nunca pode ser negativa, então usamos Math.max(0, ...)
         s.barra.style.width = `${Math.max(0, Math.min(100, porcentagem))}%`;
-        s.texto.textContent = `${s.atual}/${s.max}`;
+
+        // Lógica do texto
+        spanAtual.textContent = s.atual;
+        spanMax.textContent = s.max;
+
+        // Lógica da cor amarela para valores anormais (excedidos OU negativos)
+        if (s.atual > s.max || s.atual < 0) {
+            spanAtual.classList.add('excedido');
+        } else {
+            spanAtual.classList.remove('excedido');
+        }
     }
 
     function atualizarPortrait() {
@@ -280,6 +375,15 @@ document.addEventListener('DOMContentLoaded', () => {
         activeInputElement = null;
     });
     
+    document.getElementById('ataque-pericia').addEventListener('change', (e) => {
+        const campoMunicao = document.getElementById('campo-municao-max');
+        if (e.target.value === 'pontaria') {
+            campoMunicao.style.display = 'block';
+        } else {
+            campoMunicao.style.display = 'none';
+        }
+    });
+    
     document.getElementById('add-ataque-btn').addEventListener('click', () => {
         currentEditingAttackIndex = null;
         document.getElementById('ataque-nome').value = '';
@@ -299,6 +403,13 @@ document.addEventListener('DOMContentLoaded', () => {
             const index = parseInt(e.target.dataset.index, 10);
             currentEditingAttackIndex = index;
             const ataque = ataques[index];
+            const campoMunicao = document.getElementById('campo-municao-max');
+            if (ataque.pericia === 'pontaria') {
+                campoMunicao.style.display = 'block';
+                document.getElementById('ataque-municao-max').value = ataque.municao?.max || 0;
+            } else {
+                campoMunicao.style.display = 'none';
+            }
             document.getElementById('ataque-nome').value = ataque.nome;
             document.getElementById('ataque-pericia').value = ataque.pericia;
             document.getElementById('ataque-dano').value = ataque.dano;
@@ -322,16 +433,72 @@ document.addEventListener('DOMContentLoaded', () => {
             tipo: document.getElementById('ataque-tipo').value,
             peso: document.getElementById('ataque-peso').value
         };
-        if (currentEditingAttackIndex === null) {
-            ataques.push(ataqueData);
-        } else {
-            ataques[currentEditingAttackIndex] = ataqueData;
+        if (ataqueData.pericia === 'pontaria') {
+            const municaoMax = parseInt(document.getElementById('ataque-municao-max').value, 10) || 0;
+            ataqueData.municao = {
+                atual: municaoMax,
+                max: municaoMax
+            };
         }
-        saveData();
+
+        // Se estiver editando um ataque que já tinha munição, preserva o valor atual
+        if (currentEditingAttackIndex !== null && ataques[currentEditingAttackIndex]?.municao) {
+            const municaoAtualAntiga = ataques[currentEditingAttackIndex].municao.atual;
+            if (ataqueData.municao) { // Se o ataque continua sendo de pontaria
+                ataqueData.municao.atual = municaoAtualAntiga;
+            }
+        }
+        
+        if (currentEditingAttackIndex === null) { ataques.push(ataqueData); } 
+        else { ataques[currentEditingAttackIndex] = ataqueData; }
+
+        debounce(saveData, 200); // Salva imediatamente após fechar o modal
         renderAttacks();
+        renderMunicao(); // Re-renderiza as barras de munição
         updateCarga();
         document.getElementById('modal-gerenciar-ataque').classList.remove('active');
     });
+
+    document.getElementById('container-municao').addEventListener('click', (e) => {
+        const target = e.target;
+
+        if (target.classList.contains('arma-select-check')) {
+            const nomeAtaque = target.dataset.nomeAtaque;
+            if (target.checked) {
+                armaSelecionadaId = nomeAtaque;
+            } else {
+                armaSelecionadaId = null;
+            }
+            saveData(); // Salva imediatamente ao selecionar/desselecionar
+            renderMunicao(); // Precisa recriar tudo para mostrar/esconder as barras
+            return;
+        }
+        
+        if (target.classList.contains('control-btn-municao')) {
+            const nomeAtaque = target.closest('.municao-barra-container').querySelector('.status-header span').textContent;
+            const action = target.dataset.action;
+            
+            const ataqueAlvo = ataques.find(ataque => ataque.nome === nomeAtaque);
+            if (!ataqueAlvo) return;
+
+            if (action === 'increase') {
+                ataqueAlvo.municao.atual++;
+            } else if (action === 'decrease') {
+                ataqueAlvo.municao.atual--;
+            }
+
+            debounce(saveData, 500);
+            
+            // CORREÇÃO: Encontra o índice e chama a função de atualização específica
+            const ataquesDePontaria = ataques.filter(a => a.pericia === 'pontaria');
+            const indexNaListaPontaria = ataquesDePontaria.findIndex(a => a.nome === ataqueAlvo.nome);
+            const barraId = `municao-${indexNaListaPontaria}`;
+            
+            atualizarBarraMunicao(ataqueAlvo.municao, barraId); // <-- CHAMADA CORRIGIDA
+        }
+    });
+
+
     document.querySelector('.inventario-colunas').addEventListener('input', (e) => {
         if (e.target.classList.contains('inventario-input')) {
             const index = parseInt(e.target.dataset.index, 10);
@@ -378,8 +545,11 @@ document.addEventListener('DOMContentLoaded', () => {
         button.addEventListener('click', (e) => {
             const action = e.target.dataset.action;
             const stat = e.target.dataset.stat;
-            if (action === 'increase' && status[stat].atual < status[stat].max) status[stat].atual++;
-            else if (action === 'decrease' && status[stat].atual > 0) status[stat].atual--;
+            if (action === 'increase') {
+                status[stat].atual++;
+            } else if (action === 'decrease') {
+                status[stat].atual--;
+            }
             atualizarBarra(stat);
             saveData();
         });
@@ -471,6 +641,7 @@ document.addEventListener('DOMContentLoaded', () => {
         updateDefense();
         renderAttacks();
         renderInventory();
+        renderMunicao();
         updateCarga();
         
         // As funções de estilo das perícias ainda precisam rodar
@@ -493,6 +664,7 @@ document.addEventListener('DOMContentLoaded', () => {
             ataques = data.ataques || [];
             inventario = data.inventario || [];
             cargaMaxima = data.cargaMaxima || 8;
+            armaSelecionadaId = data.armaSelecionadaId || null;
             
             // ATUALIZAÇÃO INTELIGENTE: Só atualiza os campos que não estão em foco
             
