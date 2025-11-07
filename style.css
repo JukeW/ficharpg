@@ -425,6 +425,54 @@ body {
     margin: 0;
 }
 
+
+
+
+
+
+.stat-bloco2 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px; /* Adiciona um pequeno espaço entre o texto e a linha */
+}
+
+.stat-bloco2 label {
+    font-size: 1.2em;
+    letter-spacing: 1px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    text-shadow: 0 0 8px #ffffff63, 0 0 12px #ffffff63, 0 0 16px #ffffff63;
+}
+
+.stat-bloco2 input {
+    width: 70px;
+    height: 50px;
+    background: transparent;
+    border: none;
+    color: #ccc;
+    text-align: center;
+    font-size: 1.8em;
+    margin-top: 10px; /* Remove a margem antiga */
+    -moz-appearance: textfield;
+    font-family: 'Special Elite', monospace;
+    border: 1px solid #ffffffbc;
+    text-shadow: 0 0 8px #ffffff63, 0 0 12px #ffffff63, 0 0 16px #ffffff63;
+}
+
+.stat-bloco2 input::-webkit-outer-spin-button,
+.stat-bloco2 input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+
+
+
+
+
+
+
 #attr-agi { top: 7%; left: 51%; transform: translateX(-50%); }
 #attr-int { top: 29%; right: 6.3%; }
 #attr-for { top: 29%; left: 8.5%; }
@@ -715,4 +763,59 @@ button {
 .campo select option {
     background-color: #fff; /* Define um fundo branco (para consistência) */
     color: #000;           /* Define o texto como preto */
+}
+
+.texto-barra .excedido { /* Um pouco mais específico para garantir */
+    color: #FFD700; /* Um tom de amarelo/dourado */
+    /* Remova o font-weight: bold; daqui, se houver */
+}
+
+.container-municao {
+    margin-top: 20px;
+    flex-direction: column; /* Para empilhar múltiplas barras */
+    gap: 15px;
+}
+
+.municao-barra-container {
+    width: 100%;
+}
+
+/* Reutiliza o estilo das barras de status que já temos */
+.municao-barra-container .status-header { /* ... */ }
+.municao-barra-container .controles button { /* ... */ }
+
+/* Estilo específico para a barra de munição */
+.barra-fundo-municao {
+    background-color: #584323; /* Um cinza neutro */
+    height: 30px;
+    position: relative;
+    border: 1px solid #fff;
+}
+
+.barra-progresso.municao {
+    background-color: #ff9100; /* Dourado/Amarelo para as balas */
+    
+}
+
+.arma-select-check {
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+    cursor: pointer;
+}
+
+.stat-municao {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.stat-municao img {
+    height: 50px; /* Ajuste a altura conforme necessário */
+    width: auto;
+}
+
+.stat-municao span {
+    color: #ffd700; /* Cor amarela para munição */
+    text-shadow: 0 0 8px #ff8c00, 0 0 12px #ff8c00;
 }
